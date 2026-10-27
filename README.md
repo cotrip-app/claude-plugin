@@ -12,6 +12,7 @@ Conecta o Claude ao [CoTrip](https://cotrip.wlln.dev) e ensina a montar roteiros
   - `distribuir-locais`: leva os locais aos dias por região, horário, prioridade e ritmo.
   - `adicionar-transportes`: lança um transporte por trecho e encaixa entre os locais.
   - `revisar-dia`: aponta dia corrido, horário errado, ida e volta no mapa, alertas faltando.
+  - `preparar-visita`: pesquisa cada local (melhor horário, destaques, cuidados) e grava a visita no CoTrip, no formato padrão ou no que você pedir.
 
 ## Instalar
 
