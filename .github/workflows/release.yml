@@ -1,8 +1,11 @@
-# Cada tag v* vira uma release com o cotrip.plugin anexado, para baixar e adicionar no app do Claude.
+# Quando a versão em .claude-plugin/plugin.json muda na main, cria a release v<versão> com o cotrip.plugin anexado,
+# para baixar e adicionar no app do Claude. Também dá para rodar à mão em Actions.
 name: Release
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+    paths: [".claude-plugin/plugin.json"]
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
@@ -13,7 +16,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Versão
+        id: version
+        run: echo "tag=v$(node -p "require('./.claude-plugin/plugin.json').version")" >> "$GITHUB_OUTPUT"
       - run: node scripts/pack-plugin.mjs
-      - run: gh release create "$GITHUB_REF_NAME" dist/cotrip.plugin --title "$GITHUB_REF_NAME" --generate-notes
+      - name: Release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "$TAG já existe; suba a versão em plugin.json para publicar outra."
+          else
+            gh release create "$TAG" dist/cotrip.plugin --target "$GITHUB_SHA" --title "$TAG" --generate-notes
+          fi

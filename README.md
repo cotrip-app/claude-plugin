@@ -41,6 +41,6 @@ Os agentes autorizados aparecem em https://cotrip.wlln.dev/agentes, onde dá par
 
 1. Suba `version` em `.claude-plugin/plugin.json`.
 2. Confira com `claude plugin validate .`.
-3. Crie a tag (`git tag v0.1.0 && git push --tags`). O workflow gera `cotrip.plugin` e anexa à release.
+3. Junte na `main`. O workflow cria a release `v<versão>` com o `cotrip.plugin` anexado (também dá para rodar à mão em Actions → Release).
 
 Quando as ferramentas do servidor MCP mudarem no CoTrip, revise as skills: elas citam os nomes e as regras das ferramentas.
