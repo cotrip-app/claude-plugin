@@ -1,7 +1,7 @@
 {
   "name": "cotrip",
   "displayName": "CoTrip",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Conecta o Claude ao CoTrip e traz um planejador de roteiros com skills para montar a viagem, distribuir locais pelos dias, ligar os locais com transportes e revisar cada dia.",
   "author": {
     "name": "CoTrip",
