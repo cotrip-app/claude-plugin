@@ -1,13 +1,21 @@
-// Empacota o plugin em dist/cotrip.plugin (um .zip com os arquivos na raiz), o formato que o app do Claude aceita.
-// O workflow de release anexa esse arquivo a cada versão. Não usa dependências, só o zlib do Node.
+// Empacota o plugin em dois arquivos .zip com os arquivos na raiz, sem dependências (só o zlib do Node):
+// - dist/cotrip.plugin: formato do Claude (.claude-plugin/plugin.json, .mcp.json, agente e skills), que o app do Claude aceita.
+// - dist/cotrip-openai.zip: formato portátil da OpenAI (plugin.json e mcp.json na raiz, skills e assets), para o portal de plugins do ChatGPT/Codex.
+//   Fica sem os arquivos do Claude para o portal não ter dois manifestos para escolher, e sem agents/, que lá não existe.
+// O workflow de release anexa os dois a cada versão.
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { deflateRawSync } from "node:zlib";
 
 const root = new URL("../", import.meta.url).pathname;
-const out = join(root, "dist", "cotrip.plugin");
-// Só o que o plugin usa; o resto do repositório (git, CI, este script) fica de fora.
-const INCLUDE = [".claude-plugin", ".mcp.json", "agents", "skills", "README.md", "LICENSE"];
+// Os dois manifestos têm de estar na mesma versão; a release usa a do .claude-plugin/plugin.json.
+const versions = ["plugin.json", ".claude-plugin/plugin.json"].map((path) => JSON.parse(readFileSync(join(root, path), "utf8")).version);
+if (versions[0] !== versions[1]) throw new Error(`Versões diferentes: plugin.json ${versions[0]}, .claude-plugin/plugin.json ${versions[1]}`);
+// Só o que cada plugin usa; o resto do repositório (git, CI, este script) fica de fora.
+const TARGETS = {
+  "cotrip.plugin": [".claude-plugin", ".mcp.json", "agents", "skills", "assets", "README.md", "LICENSE"],
+  "cotrip-openai.zip": ["plugin.json", "mcp.json", "skills", "assets", "LICENSE"],
+};
 
 const files = (dir) => readdirSync(dir).sort().flatMap((name) => {
   const path = join(dir, name);
@@ -19,9 +27,10 @@ const crc32 = (buf) => { let c = 0xffffffff; for (const b of buf) c = table[(c ^
 
 // Data fixa (1/1/2026) para o arquivo sair igual a cada build.
 const DOS_TIME = 0, DOS_DATE = ((2026 - 1980) << 9) | (1 << 5) | 1;
+function pack(out, include) {
 const locals = [], centrals = [];
 let offset = 0;
-for (const path of INCLUDE.flatMap((name) => { const path = join(root, name); return statSync(path).isDirectory() ? files(path) : [path]; })) {
+for (const path of include.flatMap((name) => { const path = join(root, name); return statSync(path).isDirectory() ? files(path) : [path]; })) {
   const name = Buffer.from(relative(root, path).split("\\").join("/"));
   const data = readFileSync(path);
   const packed = deflateRawSync(data, { level: 9 });
@@ -42,5 +51,8 @@ const end = Buffer.alloc(22);
 end.writeUInt32LE(0x06054b50, 0); end.writeUInt16LE(centrals.length / 2, 8); end.writeUInt16LE(centrals.length / 2, 10);
 end.writeUInt32LE(dir.length, 12); end.writeUInt32LE(offset, 16);
 mkdirSync(join(root, "dist"), { recursive: true });
-writeFileSync(out, Buffer.concat([...locals, dir, end]));
-console.log(`plugin empacotado: dist/cotrip.plugin (${centrals.length / 2} arquivos)`);
+writeFileSync(join(root, "dist", out), Buffer.concat([...locals, dir, end]));
+console.log(`plugin empacotado: dist/${out} (${centrals.length / 2} arquivos)`);
+}
+
+for (const [out, include] of Object.entries(TARGETS)) pack(out, include);

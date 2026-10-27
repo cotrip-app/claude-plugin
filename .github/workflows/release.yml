@@ -1,10 +1,10 @@
-# Quando a versão em .claude-plugin/plugin.json muda na main, cria a release v<versão> com o cotrip.plugin anexado,
-# para baixar e adicionar no app do Claude. Também dá para rodar à mão em Actions.
+# Quando a versão do plugin muda na main, cria a release v<versão> com o cotrip.plugin (app do Claude)
+# e o cotrip-openai.zip (portal de plugins da OpenAI) anexados. Também dá para rodar à mão em Actions.
 name: Release
 on:
   push:
     branches: [main]
-    paths: [".claude-plugin/plugin.json"]
+    paths: [".claude-plugin/plugin.json", "plugin.json"]
   workflow_dispatch:
 permissions:
   contents: write
@@ -28,5 +28,5 @@ jobs:
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "$TAG já existe; suba a versão em plugin.json para publicar outra."
           else
-            gh release create "$TAG" dist/cotrip.plugin --target "$GITHUB_SHA" --title "$TAG" --generate-notes
+            gh release create "$TAG" dist/cotrip.plugin dist/cotrip-openai.zip --target "$GITHUB_SHA" --title "$TAG" --generate-notes
           fi

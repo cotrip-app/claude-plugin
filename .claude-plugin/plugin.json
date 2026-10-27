@@ -1,8 +1,8 @@
 {
   "name": "cotrip",
   "displayName": "CoTrip",
-  "version": "0.2.0",
-  "description": "Conecta o Claude ao CoTrip e traz um planejador de roteiros com skills para montar a viagem, distribuir locais pelos dias, ligar os locais com transportes e revisar cada dia.",
+  "version": "0.3.0",
+  "description": "Conecta o CoTrip à sua IA e traz um planejador de roteiros com skills para montar a viagem, distribuir locais pelos dias, ligar os locais com transportes, revisar cada dia e preparar as visitas.",
   "author": {
     "name": "CoTrip",
     "url": "https://cotrip.wlln.dev"
@@ -17,7 +17,7 @@
     "itinerary",
     "cotrip"
   ],
-  "icon": "./.claude-plugin/icon.png",
+  "icon": "./assets/icon.png",
   "privacyPolicyUrl": "https://cotrip.wlln.dev/privacidade",
   "termsOfServiceUrl": "https://cotrip.wlln.dev/termos",
   "documentationUrl": "https://github.com/cotrip-app/claude-plugin#readme",

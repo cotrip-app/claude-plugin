@@ -9,7 +9,7 @@ O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e u
 
 ## Antes de mexer
 
-1. Se as ferramentas do CoTrip não estiverem disponíveis, peça para a pessoa conectar o CoTrip (no Claude Code: `/mcp`, escolher `cotrip` e autenticar; no claude.ai ou no app: ativar o conector CoTrip). Ela entra com o e-mail e autoriza.
+1. Se as ferramentas do CoTrip não estiverem disponíveis, peça para a pessoa conectar o CoTrip (no Claude Code: `/mcp`, escolher `cotrip` e autenticar; no Claude, ChatGPT ou Codex: ativar o CoTrip nos conectores ou plugins). Ela entra com o e-mail e autoriza.
 2. Comece com `list_trips`. Se houver mais de uma viagem possível, pergunte qual. Para uma viagem nova, use `create_trip` (cria um dia por data, até 90).
 3. Chame `get_trip` e use só IDs que vieram dele. Nunca invente IDs. Chame `get_trip` de novo depois de uma sequência de mudanças, antes de reordenar ou revisar.
 
@@ -54,7 +54,7 @@ Escolha pelo que o item é; não crie tudo como nota.
 
 ## Limites
 
-- No plano gratuito, as **edições** por agente têm limite semanal (ler não conta). Se aparecer o aviso de limite, pare, explique e mostre o link de planos que veio na mensagem. Não fique tentando de novo.
+- As **edições** por agente podem ter limite semanal na conta (ler não conta). Se aparecer o aviso de limite, pare, explique o que a mensagem disse e diga o que ficou sem fazer. Não fique tentando de novo.
 - Por isso, planeje antes de editar: monte a proposta, mostre para a pessoa, e só então aplique em lote, sem chamadas de teste nem idas e vindas.
 
 ## Jeito de conversar
