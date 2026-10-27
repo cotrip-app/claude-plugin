@@ -1,0 +1,19 @@
+# Cada tag v* vira uma release com o cotrip.plugin anexado, para baixar e adicionar no app do Claude.
+name: Release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/pack-plugin.mjs
+      - run: gh release create "$GITHUB_REF_NAME" dist/cotrip.plugin --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
