@@ -1,0 +1,102 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cotrip",
+  "version": "0.3.0",
+  "description": "Connects your AI to CoTrip and brings skills to build a trip day by day, spread places across days, link them with transport, review each day and prepare visits.",
+  "author": { "name": "CoTrip", "url": "https://cotrip.wlln.dev" },
+  "homepage": "https://cotrip.wlln.dev/agentes",
+  "repository": "https://github.com/cotrip-app/claude-plugin",
+  "license": "MIT",
+  "keywords": ["travel", "itinerary", "trip planning", "viagem", "roteiro", "cotrip"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "CoTrip",
+        "shortDescription": "Plan trips day by day",
+        "longDescription": "CoTrip is a travel itinerary app: each trip has one day per date, and each day is an ordered list of places and day items (notes, alerts, transport legs and links), plus a list of places not yet planned.\n\nWith this plugin you can ask in chat to create a trip, add places from a conversation or a Google Maps link, spread them across days by area and opening hours, add transport between stops, reorder a day, review whether a day is too packed and write a visit guide for each place. Everything shows up in the CoTrip app on your phone.\n\nYou sign in with your CoTrip account and approve access once. Deleting places or day items always asks you first. Trip content is in Portuguese by default and follows the language you use.",
+        "developerName": "CoTrip",
+        "category": "Travel",
+        "capabilities": [
+          "Create and edit trips with one day per date",
+          "Add places to a day or to the unplanned list",
+          "Move places between days and reorder a day",
+          "Add notes, alerts, transport legs and links to a day",
+          "Review a day for pace, hours and routing",
+          "Write a visit guide for each place"
+        ],
+        "websiteURL": "https://cotrip.wlln.dev",
+        "supportURL": "https://github.com/cotrip-app/claude-plugin/issues",
+        "privacyPolicyURL": "https://cotrip.wlln.dev/privacidade",
+        "termsOfServiceURL": "https://cotrip.wlln.dev/termos",
+        "defaultPrompt": [
+          "I'm going to Lisbon from May 10 to 16, build the itinerary in CoTrip",
+          "Spread the unplanned places of my Tokyo trip across the days",
+          "Review day 3 of my Rome trip, is it too packed?"
+        ],
+        "brandColor": "#2747E8",
+        "logo": "./assets/icon.png",
+        "composerIcon": "./assets/icon.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "List the account's trips",
+              "prompt": "What trips do I have in CoTrip?",
+              "tools_triggered": "list_trips",
+              "expected_behavior": "Lists the demo account's trips with name, destination and dates, without changing anything."
+            },
+            {
+              "description": "Create a new trip with one day per date",
+              "prompt": "Create a trip called Lisbon 2027 to Lisbon from May 10 to May 13, 2027 in CoTrip.",
+              "tools_triggered": "create_trip",
+              "expected_behavior": "Creates the trip and reports that it has 4 days, May 10 to 13."
+            },
+            {
+              "description": "Add places to a specific day",
+              "prompt": "In my Lisbon 2027 trip, add Belém Tower and Jerónimos Monastery to the second day.",
+              "tools_triggered": "list_trips, get_trip, add_place",
+              "expected_behavior": "Adds both places at the end of May 11 and confirms which day they went to."
+            },
+            {
+              "description": "Add a transport leg between two places",
+              "prompt": "On day 2 of Lisbon 2027, add the tram 15E from Praça da Figueira to Belém before Belém Tower.",
+              "tools_triggered": "get_trip, add_note, reorder_day",
+              "expected_behavior": "Adds a transport item (tram, from Praça da Figueira to Belém) and reorders the day so it comes before Belém Tower."
+            },
+            {
+              "description": "Review a day without changing it",
+              "prompt": "Review the second day of my Lisbon 2027 trip. Is it too packed?",
+              "tools_triggered": "get_trip",
+              "expected_behavior": "Reads the trip and gives a short review of the day (pace, hours, routing) without editing anything unless asked."
+            }
+          ],
+          "negative": [
+            {
+              "description": "General travel question with no CoTrip intent",
+              "prompt": "What's the best time of year to visit Japan?"
+            },
+            {
+              "description": "Booking request the plugin can't do",
+              "prompt": "Book me a flight from São Paulo to Lisbon for May 10."
+            },
+            {
+              "description": "Unrelated task",
+              "prompt": "Write a Python function that sorts a list of numbers."
+            }
+          ]
+        },
+        "commerce": false
+      },
+      "publication": {
+        "release_notes": "First version for ChatGPT and Codex: CoTrip MCP server plus skills to build, organize and review trip itineraries.",
+        "translations": {
+          "pt-BR": {
+            "subtitle": "Roteiros de viagem por dia",
+            "description": "O CoTrip organiza a viagem em dias, cada um com a ordem dos locais, notas, alertas, transportes e links, mais uma lista de locais ainda sem dia.\n\nCom o plugin você pede na conversa para criar a viagem, adicionar locais de uma conversa ou de um link do Google Maps, distribuir pelos dias por região e horário, ligar os locais com transportes, reordenar o dia, revisar se está corrido e preparar a visita a cada local. Tudo aparece no app do CoTrip no celular.\n\nVocê entra com sua conta do CoTrip e autoriza uma vez. Remover locais ou itens sempre pede confirmação."
+          }
+        }
+      }
+    }
+  }
+}
