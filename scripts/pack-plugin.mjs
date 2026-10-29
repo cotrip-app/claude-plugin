@@ -1,8 +1,8 @@
 // Empacota o plugin em dois arquivos .zip com os arquivos na raiz, sem dependências (só o zlib do Node):
 // - dist/cotrip.plugin: formato do Claude (.claude-plugin/plugin.json, .mcp.json, agente e skills), que o app do Claude aceita.
 // - dist/cotrip-openai.zip: formato portátil da OpenAI (plugin.json e mcp.json na raiz, skills e assets), para o portal de plugins do ChatGPT/Codex.
-//   Os arquivos dela moram em openai/ e vão para a raiz do zip. Ficam fora da raiz do repositório porque o diretório do Claude
-//   lê o repositório inteiro: um manifesto ou ícone ali segura a versão para revisão manual.
+//   Os arquivos dela moram em openai/ e vão para a raiz do zip. O ícone não fica no repositório: o diretório do Claude lê o
+//   repositório inteiro e segura para revisão manual a versão com imagem citada em algum arquivo. Ele vem do site na hora de empacotar.
 //   O zip fica sem os arquivos do Claude para o portal não ter dois manifestos para escolher, e sem agents/, que lá não existe.
 // O workflow de release anexa os dois a cada versão.
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
@@ -17,8 +17,12 @@ if (versions[0] !== versions[1]) throw new Error(`Versões diferentes: openai/pl
 // Cada item é o caminho no repositório e, opcionalmente, a pasta dele que vira a raiz do zip.
 const TARGETS = {
   "cotrip.plugin": [".claude-plugin", ".mcp.json", "agents", "skills", "README.md", "LICENSE"],
-  "cotrip-openai.zip": [["openai/plugin.json", "openai"], ["openai/mcp.json", "openai"], "skills", ["openai/assets", "openai"], "LICENSE"],
+  "cotrip-openai.zip": [["openai/plugin.json", "openai"], ["openai/mcp.json", "openai"], "skills", "LICENSE"],
 };
+// O ícone do app (512 px), o mesmo que o openai/plugin.json cita em logo e composerIcon.
+const icon = Buffer.from(await (await fetch("https://cotrip.wlln.dev/icons/icon-512.png")).arrayBuffer());
+if (!icon.subarray(1, 4).equals(Buffer.from("PNG"))) throw new Error("O site não devolveu o ícone em PNG");
+const EXTRA = { "cotrip-openai.zip": [["assets/icon.png", icon]] };
 
 const files = (dir) => readdirSync(dir).sort().flatMap((name) => {
   const path = join(dir, name);
@@ -30,16 +34,15 @@ const crc32 = (buf) => { let c = 0xffffffff; for (const b of buf) c = table[(c ^
 
 // Data fixa (1/1/2026) para o arquivo sair igual a cada build.
 const DOS_TIME = 0, DOS_DATE = ((2026 - 1980) << 9) | (1 << 5) | 1;
-function pack(out, include) {
+function pack(out, include, extra = []) {
 const locals = [], centrals = [];
 let offset = 0;
-for (const [path, base] of include.flatMap((item) => {
+for (const [zipName, data] of include.flatMap((item) => {
   const [name, base = ""] = [item].flat();
   const path = join(root, name);
-  return (statSync(path).isDirectory() ? files(path) : [path]).map((file) => [file, join(root, base)]);
-})) {
-  const name = Buffer.from(relative(base, path).split("\\").join("/"));
-  const data = readFileSync(path);
+  return (statSync(path).isDirectory() ? files(path) : [path]).map((file) => [relative(join(root, base), file).split("\\").join("/"), readFileSync(file)]);
+}).concat(extra)) {
+  const name = Buffer.from(zipName);
   const packed = deflateRawSync(data, { level: 9 });
   const crc = crc32(data);
   const local = Buffer.alloc(30);
@@ -62,4 +65,4 @@ writeFileSync(join(root, "dist", out), Buffer.concat([...locals, dir, end]));
 console.log(`plugin empacotado: dist/${out} (${centrals.length / 2} arquivos)`);
 }
 
-for (const [out, include] of Object.entries(TARGETS)) pack(out, include);
+for (const [out, include] of Object.entries(TARGETS)) pack(out, include, EXTRA[out]);
