@@ -41,11 +41,11 @@ As skills e o servidor MCP são os mesmos. Os arquivos só da OpenAI moram em `o
 |---|---|---|
 | Manifesto | `.claude-plugin/plugin.json` | `openai/plugin.json` (formato portátil, textos do diretório em `extensions.com.openai`) |
 | Servidor MCP | `.mcp.json` | `openai/mcp.json` (com `type: streamable-http` e OAuth por registro dinâmico) |
-| Ícone | definido na ficha do diretório | `openai/assets/icon.png` |
+| Ícone | definido na ficha do diretório | o do app, baixado do site ao empacotar |
 | Agente | `agents/` | não existe lá; fica fora do pacote |
 | Pacote | `dist/cotrip.plugin` | `dist/cotrip-openai.zip` |
 
-Um não lê os arquivos do outro, então não há conflito. O manifesto do Claude não aponta para imagem nenhuma e não há manifesto nem imagem na raiz: o diretório do Claude manda para revisão manual a versão que referencia uma imagem. O `cotrip-openai.zip` sai sem os arquivos do Claude para o portal da OpenAI não ter dois manifestos para escolher.
+Um não lê os arquivos do outro, então não há conflito. Não guarde imagens no repositório nem cite uma em arquivo: o diretório do Claude lê o repositório inteiro e manda para revisão manual a versão que faz isso. O `cotrip-openai.zip` sai sem os arquivos do Claude para o portal da OpenAI não ter dois manifestos para escolher.
 
 ## Exemplos
 
@@ -59,7 +59,7 @@ Os agentes autorizados aparecem em https://cotrip.wlln.dev/agentes, onde dá par
 ## Publicar uma versão
 
 1. Suba `version` em `.claude-plugin/plugin.json` e em `openai/plugin.json` (o empacotador recusa versões diferentes).
-2. Confira com `claude plugin validate .` e `node scripts/pack-plugin.mjs`.
+2. Confira com `claude plugin validate .` e `node scripts/pack-plugin.mjs` (precisa de internet para baixar o ícone).
 3. Junte na `main`. O workflow cria a release `v<versão>` com o `cotrip.plugin` e o `cotrip-openai.zip` anexados (também dá para rodar à mão em Actions → Release).
 4. Na OpenAI, suba o `cotrip-openai.zip` novo no portal de plugins. Mudanças só no servidor MCP não precisam de pacote novo: o portal lê o servidor de novo todo dia.
 
