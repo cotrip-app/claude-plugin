@@ -35,16 +35,17 @@ Procure CoTrip no diretório de plugins quando ele estiver publicado. O pacote p
 
 ## Um plugin, dois formatos
 
-As skills, o ícone (`assets/`) e o servidor MCP são os mesmos. Muda só o manifesto:
+As skills e o servidor MCP são os mesmos. Os arquivos só da OpenAI moram em `openai/` e vão para a raiz do zip:
 
 | | Claude | OpenAI (ChatGPT e Codex) |
 |---|---|---|
-| Manifesto | `.claude-plugin/plugin.json` | `plugin.json` na raiz (formato portátil, textos do diretório em `extensions.com.openai`) |
-| Servidor MCP | `.mcp.json` | `mcp.json` (com `type: streamable-http` e OAuth por registro dinâmico) |
+| Manifesto | `.claude-plugin/plugin.json` | `openai/plugin.json` (formato portátil, textos do diretório em `extensions.com.openai`) |
+| Servidor MCP | `.mcp.json` | `openai/mcp.json` (com `type: streamable-http` e OAuth por registro dinâmico) |
+| Ícone | definido na ficha do diretório | `openai/assets/icon.png` |
 | Agente | `agents/` | não existe lá; fica fora do pacote |
 | Pacote | `dist/cotrip.plugin` | `dist/cotrip-openai.zip` |
 
-Um não lê os arquivos do outro, então não há conflito. O `cotrip-openai.zip` sai sem os arquivos do Claude para o portal da OpenAI não ter dois manifestos para escolher.
+Um não lê os arquivos do outro, então não há conflito. O manifesto do Claude não aponta para imagem nenhuma e não há manifesto nem imagem na raiz: o diretório do Claude manda para revisão manual a versão que referencia uma imagem. O `cotrip-openai.zip` sai sem os arquivos do Claude para o portal da OpenAI não ter dois manifestos para escolher.
 
 ## Exemplos
 
@@ -57,9 +58,9 @@ Os agentes autorizados aparecem em https://cotrip.wlln.dev/agentes, onde dá par
 
 ## Publicar uma versão
 
-1. Suba `version` em `.claude-plugin/plugin.json` e em `plugin.json` (o empacotador recusa versões diferentes).
+1. Suba `version` em `.claude-plugin/plugin.json` e em `openai/plugin.json` (o empacotador recusa versões diferentes).
 2. Confira com `claude plugin validate .` e `node scripts/pack-plugin.mjs`.
 3. Junte na `main`. O workflow cria a release `v<versão>` com o `cotrip.plugin` e o `cotrip-openai.zip` anexados (também dá para rodar à mão em Actions → Release).
 4. Na OpenAI, suba o `cotrip-openai.zip` novo no portal de plugins. Mudanças só no servidor MCP não precisam de pacote novo: o portal lê o servidor de novo todo dia.
 
-Quando as ferramentas do servidor MCP mudarem no CoTrip, revise as skills (elas citam os nomes e as regras das ferramentas) e os casos de teste em `plugin.json` (`extensions.com.openai.review`).
+Quando as ferramentas do servidor MCP mudarem no CoTrip, revise as skills (elas citam os nomes e as regras das ferramentas) e os casos de teste em `openai/plugin.json` (`extensions.com.openai.review`).

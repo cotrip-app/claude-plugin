@@ -4,7 +4,7 @@ name: Release
 on:
   push:
     branches: [main]
-    paths: [".claude-plugin/plugin.json", "plugin.json"]
+    paths: [".claude-plugin/plugin.json", "openai/plugin.json"]
   workflow_dispatch:
 permissions:
   contents: write

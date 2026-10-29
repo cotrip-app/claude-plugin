@@ -1,7 +1,7 @@
 {
   "name": "cotrip",
   "displayName": "CoTrip",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Conecta o CoTrip à sua IA e traz um planejador de roteiros com skills para montar a viagem, distribuir locais pelos dias, ligar os locais com transportes, revisar cada dia e preparar as visitas.",
   "author": {
     "name": "CoTrip",
@@ -17,7 +17,6 @@
     "itinerary",
     "cotrip"
   ],
-  "icon": "./assets/icon.png",
   "privacyPolicyUrl": "https://cotrip.wlln.dev/privacidade",
   "termsOfServiceUrl": "https://cotrip.wlln.dev/termos",
   "documentationUrl": "https://github.com/cotrip-app/claude-plugin#readme",
