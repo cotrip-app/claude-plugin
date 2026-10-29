@@ -1,7 +1,9 @@
 // Empacota o plugin em dois arquivos .zip com os arquivos na raiz, sem dependências (só o zlib do Node):
 // - dist/cotrip.plugin: formato do Claude (.claude-plugin/plugin.json, .mcp.json, agente e skills), que o app do Claude aceita.
 // - dist/cotrip-openai.zip: formato portátil da OpenAI (plugin.json e mcp.json na raiz, skills e assets), para o portal de plugins do ChatGPT/Codex.
-//   Fica sem os arquivos do Claude para o portal não ter dois manifestos para escolher, e sem agents/, que lá não existe.
+//   Os arquivos dela moram em openai/ e vão para a raiz do zip. Ficam fora da raiz do repositório porque o diretório do Claude
+//   lê o repositório inteiro: um manifesto ou ícone ali segura a versão para revisão manual.
+//   O zip fica sem os arquivos do Claude para o portal não ter dois manifestos para escolher, e sem agents/, que lá não existe.
 // O workflow de release anexa os dois a cada versão.
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -9,12 +11,13 @@ import { deflateRawSync } from "node:zlib";
 
 const root = new URL("../", import.meta.url).pathname;
 // Os dois manifestos têm de estar na mesma versão; a release usa a do .claude-plugin/plugin.json.
-const versions = ["plugin.json", ".claude-plugin/plugin.json"].map((path) => JSON.parse(readFileSync(join(root, path), "utf8")).version);
-if (versions[0] !== versions[1]) throw new Error(`Versões diferentes: plugin.json ${versions[0]}, .claude-plugin/plugin.json ${versions[1]}`);
+const versions = ["openai/plugin.json", ".claude-plugin/plugin.json"].map((path) => JSON.parse(readFileSync(join(root, path), "utf8")).version);
+if (versions[0] !== versions[1]) throw new Error(`Versões diferentes: openai/plugin.json ${versions[0]}, .claude-plugin/plugin.json ${versions[1]}`);
 // Só o que cada plugin usa; o resto do repositório (git, CI, este script) fica de fora.
+// Cada item é o caminho no repositório e, opcionalmente, a pasta dele que vira a raiz do zip.
 const TARGETS = {
-  "cotrip.plugin": [".claude-plugin", ".mcp.json", "agents", "skills", "assets", "README.md", "LICENSE"],
-  "cotrip-openai.zip": ["plugin.json", "mcp.json", "skills", "assets", "LICENSE"],
+  "cotrip.plugin": [".claude-plugin", ".mcp.json", "agents", "skills", "README.md", "LICENSE"],
+  "cotrip-openai.zip": [["openai/plugin.json", "openai"], ["openai/mcp.json", "openai"], "skills", ["openai/assets", "openai"], "LICENSE"],
 };
 
 const files = (dir) => readdirSync(dir).sort().flatMap((name) => {
@@ -30,8 +33,12 @@ const DOS_TIME = 0, DOS_DATE = ((2026 - 1980) << 9) | (1 << 5) | 1;
 function pack(out, include) {
 const locals = [], centrals = [];
 let offset = 0;
-for (const path of include.flatMap((name) => { const path = join(root, name); return statSync(path).isDirectory() ? files(path) : [path]; })) {
-  const name = Buffer.from(relative(root, path).split("\\").join("/"));
+for (const [path, base] of include.flatMap((item) => {
+  const [name, base = ""] = [item].flat();
+  const path = join(root, name);
+  return (statSync(path).isDirectory() ? files(path) : [path]).map((file) => [file, join(root, base)]);
+})) {
+  const name = Buffer.from(relative(base, path).split("\\").join("/"));
   const data = readFileSync(path);
   const packed = deflateRawSync(data, { level: 9 });
   const crc = crc32(data);
