@@ -20,7 +20,7 @@ Para cada dia, procure:
 2. **Horários**: `timeSlot` fora de `openingHours`; local que fecha naquele dia da semana; atividade de pôr do sol de manhã; dois itens no mesmo horário; horários fora de ordem.
 3. **Geografia**: regiões (`area`) que vão e voltam (A → B → A); local de outra cidade no dia; trecho longo no fim da noite.
 4. **Transportes**: locais seguidos sem transporte entre eles quando a distância pede; transporte com `from`/`to` que não bate com os locais vizinhos; transporte sem `mode`.
-5. **Tipos**: nota que é deslocamento (devia ser `transport`), link de vídeo salvo como nota (devia ser `link`), aviso com consequência salvo como nota (devia ser `alert`), hotel salvo como local ou nota (devia ser hospedagem, `lodging`, com o dia da saída).
+5. **Tipos**: nota que é deslocamento (devia ser `transport`), link de vídeo salvo como nota (devia ser `link`), aviso com consequência salvo como nota (devia ser `alert`), hotel salvo como local ou nota (devia ser hospedagem, `lodging`, com o dia da saída), voo ou trem com companhia, assento ou portão escritos no texto (vão nos campos `carrier`, `number`, `seat` e `gate` do transporte), dica de foto salva como nota (devia ser ponto de foto, `photo`).
 6. **Alertas faltando**: reserva obrigatória, ingresso com hora marcada, fechamento cedo, dinheiro vivo, roupa adequada (templos, igrejas).
 7. **Básico**: refeição no dia; dia sem título ou com cidade errada; local repetido em dois dias; status `visited`/`missed` em dia futuro.
 

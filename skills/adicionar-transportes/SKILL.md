@@ -25,7 +25,7 @@ Pule trechos que já têm transporte. Não crie trecho entre locais vizinhos ób
 - Inferir quando for claro: voo entre cidades distantes (`plane`); trecho curto no mesmo bairro, até ~15 min andando (`walk`); metrô/trem/ônibus citado pela pessoa ou óbvio na cidade (`metro`, `train`, `bus`).
 - Quando não der para saber (carro alugado ou transporte público? táxi ou metrô?), **pergunte uma vez para o dia todo** antes de criar, oferecendo a opção mais comum na cidade.
 - Em `details`, escreva como ir de forma prática: linha e sentido, estação de embarque e de saída, tempo aproximado, onde comprar o bilhete. Se não tiver certeza da linha, diga "conferir no Maps" em vez de inventar.
-- `departAt` e `arriveAt` só com horário real (reserva ou `timeSlot` dos locais). `code` para número do voo, localizador ou reserva.
+- `departAt` e `arriveAt` só com horário real (reserva ou `timeSlot` dos locais). `code` para a reserva ou o localizador. Em voo, trem, ônibus ou barco com bilhete, preencha `carrier`, `number`, `seat` e `gate` com os dados da reserva: o app mostra o trecho como uma passagem. Não invente assento, portão ou plataforma; deixe vazio quando a reserva não disser.
 - `text` fica para uma observação curta ("Levar passaporte", "Comprar Suica no aeroporto").
 
 ## 3. Criar e encaixar
