@@ -5,7 +5,7 @@ description: Regras para ler e editar viagens no CoTrip pelas ferramentas do con
 
 # Como trabalhar com o CoTrip
 
-O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e uma lista de **Não planejados** (locais ainda sem dia). Cada dia tem uma sequência única de itens, misturando **locais** e **itens do dia** (nota, alerta, checklist, transporte, link e arquivo). A ordem dessa sequência é o roteiro que a pessoa vê no celular.
+O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e uma lista de **Não planejados** (locais ainda sem dia). Cada dia tem uma sequência única de itens, misturando **locais** e **itens do dia** (nota, alerta, checklist, transporte, hospedagem, link e arquivo). A ordem dessa sequência é o roteiro que a pessoa vê no celular.
 
 ## Antes de mexer
 
@@ -51,6 +51,7 @@ Escolha pelo que o item é; não crie tudo como nota.
 - **link**: vídeos (YouTube, TikTok, Instagram) e páginas úteis, com um `title` que diga do que se trata. YouTube aparece como vídeo no roteiro.
 - **alert**: aviso com consequência se ignorado ("Fecha às 17h", "Precisa reservar", "Só aceita dinheiro").
 - **checklist**: tarefas que a pessoa precisa fazer (comprar, reservar, levar, confirmar). `text` é o título; as tarefas vão em `checklist.items`. Pedidos do tipo "me lembra de…" usam `add_reminder` (skill `lembretes`).
+- **lodging**: hospedagem (hotel, Airbnb, casa de amigos). Um item por estadia, no dia do check-in, com `lodging.checkOutDayId` = dia da saída. Preencha `name` e, quando souber, `address`, `checkInAt`/`checkOutAt` (HH:MM), `code` (reserva, localizador), `details` (quarto, café incluso) e `info` (Wi-Fi, telefone, como pegar a chave). O app mostra sozinho "Saindo de" e "Dormindo em" em cada dia; se a pessoa troca de hotel, crie outra hospedagem no dia da troca.
 - **note**: o resto (ideias, observações).
 - Arquivos (fotos, PDFs, passagens) só entram pelo app; diga isso se a pessoa pedir.
 
