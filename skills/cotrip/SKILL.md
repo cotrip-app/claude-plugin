@@ -52,7 +52,7 @@ Escolha pelo que o item é; não crie tudo como nota.
 - **alert**: aviso com consequência se ignorado ("Fecha às 17h", "Precisa reservar", "Só aceita dinheiro").
 - **checklist**: tarefas que a pessoa precisa fazer (comprar, reservar, levar, confirmar). `text` é o título; as tarefas vão em `checklist.items`. Pedidos do tipo "me lembra de…" usam `add_reminder` (skill `lembretes`).
 - **lodging**: hospedagem (hotel, Airbnb, casa de amigos). Um item por estadia, no dia do check-in, com `lodging.checkOutDayId` = dia da saída. Preencha `name` e, quando souber, `address`, `checkInAt`/`checkOutAt` (HH:MM), `code` (reserva, localizador), `details` (quarto, café incluso) e `info` (Wi-Fi, telefone, como pegar a chave). O app mostra sozinho "Saindo de" e "Dormindo em" em cada dia; se a pessoa troca de hotel, crie outra hospedagem no dia da troca.
-- **photo**: ponto de foto, um lugar bom para fotografar. `photo.title` diz o que fotografar; `where`, de onde; `bestTime`, a melhor luz ou hora; `text`, a dica de enquadramento. Crie perto do local a que se refere (`beforeId`/`afterId`). No app, o card tem um botão que abre a câmera do celular; fotos não entram pelo conector.
+- **photo**: ponto de foto, um lugar bom para fotografar. `photo.title` diz o que fotografar; `where`, de onde; `bestTime`, a melhor luz ou hora; `text`, a dica de enquadramento. Crie perto do local a que se refere (`beforeId`/`afterId`).
 - **note**: o resto (ideias, observações).
 - Arquivos (fotos, PDFs, passagens) só entram pelo app; diga isso se a pessoa pedir.
 
