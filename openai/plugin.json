@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cotrip",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Connects your AI to CoTrip and brings skills to build a trip day by day, spread places across days, link them with transport, review each day and prepare visits.",
   "author": { "name": "CoTrip", "url": "https://cotrip.wlln.dev" },
   "homepage": "https://cotrip.wlln.dev/agentes",

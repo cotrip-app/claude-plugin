@@ -27,7 +27,7 @@ Depois rode `/mcp`, escolha `cotrip` e autentique.
 
 **Claude (app e claude.ai)**
 
-Baixe o `cotrip.plugin` da [versão mais recente](https://github.com/cotrip-app/claude-plugin/releases/latest/download/cotrip.plugin) e adicione na área de plugins, ou adicione o marketplace `cotrip-app/claude-plugin`. Se preferir só o conector, adicione `https://cotrip.wlln.dev/api/mcp` como conector personalizado.
+Baixe o `cotrip.plugin` da [versão mais recente](https://github.com/cotrip-app/claude-plugin/releases/latest/download/cotrip.plugin) e adicione na área de plugins, ou adicione o marketplace `cotrip-app/claude-plugin`. Se preferir só o conector, o jeito mais rápido é abrir o [CoTrip no diretório do Claude](https://claude.ai/directory/cotrip) e tocar em Conectar.
 
 **ChatGPT e Codex**
 

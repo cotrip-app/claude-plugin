@@ -42,4 +42,4 @@ Mostre o plano para a pessoa como uma lista por dia (local — região — horá
 
 ## 4. Fechar
 
-Resuma o que foi para cada dia e o que ficou de fora. Sugira rodar `adicionar-transportes` se os trechos ainda não estiverem lançados.
+Resuma o que foi para cada dia e o que ficou de fora. Sugira rodar `adicionar-transportes` se os trechos ainda não estiverem lançados. Termine com o link da viagem no CoTrip (o campo `url` que vem em `get_trip`, `list_trips`, `create_trip` e `update_trip`; o do dia, quando só um dia mudou), para a pessoa abrir direto no app.

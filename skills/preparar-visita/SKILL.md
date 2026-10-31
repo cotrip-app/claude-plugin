@@ -37,4 +37,4 @@ Cada chamada cria uma versão nova no histórico do local e vira a versão em us
 
 ## 5. Avisar
 
-Resuma por local o essencial (melhor horário e o principal cuidado) e diga que a visita completa está na tela do local no CoTrip. Se algo pede ação (reservar, comprar ingresso), sugira criar um alerta no dia com `add_note`.
+Resuma por local o essencial (melhor horário e o principal cuidado) e diga que a visita completa está na tela do local no CoTrip. Se algo pede ação (reservar, comprar ingresso), sugira criar um alerta no dia com `add_note`. Termine com o link da viagem no CoTrip (o campo `url` que vem em `get_trip`, `list_trips`, `create_trip` e `update_trip`; o do dia, quando só um dia mudou), para a pessoa abrir direto no app.
