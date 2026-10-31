@@ -5,7 +5,7 @@ description: Regras para ler e editar viagens no CoTrip pelas ferramentas do con
 
 # Como trabalhar com o CoTrip
 
-O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e uma lista de **Não planejados** (locais ainda sem dia). Cada dia tem uma sequência única de itens, misturando **locais** e **itens do dia** (nota, alerta, checklist, transporte, hospedagem, link e arquivo). A ordem dessa sequência é o roteiro que a pessoa vê no celular.
+O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e uma lista de **Não planejados** (locais ainda sem dia). Cada dia tem uma sequência única de itens, misturando **locais** e **itens do dia** (nota, alerta, checklist, transporte ou passagem, hospedagem, ponto de foto, link e arquivo). A ordem dessa sequência é o roteiro que a pessoa vê no celular.
 
 ## Antes de mexer
 
@@ -47,11 +47,12 @@ Fluxo para montar um dia: `move_places` (ou `add_place` com `dayId`) → `add_no
 
 Escolha pelo que o item é; não crie tudo como nota.
 
-- **transport**: qualquer deslocamento. Uma rota com paradas vira um transporte por trecho, na ordem. Preencha `mode` (`plane`, `train`, `metro`, `bus`, `car`, `walk`, `boat`, `other`), `from`, `to`, e quando souber `departAt`/`arriveAt` (HH:MM), `details` (linha, plataforma, onde comprar o bilhete) e `code` (voo, reserva, localizador). Se o meio não der para inferir, pergunte antes de criar.
+- **transport**: qualquer deslocamento. Uma rota com paradas vira um transporte por trecho, na ordem. Preencha `mode` (`plane`, `train`, `metro`, `bus`, `car`, `walk`, `boat`, `other`), `from`, `to`, e quando souber `departAt`/`arriveAt` (HH:MM), `details` (linha, plataforma, onde comprar o bilhete) e `code` (reserva, localizador). Em voo, trem, ônibus ou barco com bilhete, preencha também `carrier` (companhia), `number` (voo, trem ou linha), `seat` (assento) e `gate` (terminal e portão, plataforma ou cais) quando a pessoa informar: o app mostra o item como uma passagem, com a reserva para copiar. Chegada depois da meia-noite vai só com o horário (o app mostra +1). Se o meio não der para inferir, pergunte antes de criar.
 - **link**: vídeos (YouTube, TikTok, Instagram) e páginas úteis, com um `title` que diga do que se trata. YouTube aparece como vídeo no roteiro.
 - **alert**: aviso com consequência se ignorado ("Fecha às 17h", "Precisa reservar", "Só aceita dinheiro").
 - **checklist**: tarefas que a pessoa precisa fazer (comprar, reservar, levar, confirmar). `text` é o título; as tarefas vão em `checklist.items`. Pedidos do tipo "me lembra de…" usam `add_reminder` (skill `lembretes`).
 - **lodging**: hospedagem (hotel, Airbnb, casa de amigos). Um item por estadia, no dia do check-in, com `lodging.checkOutDayId` = dia da saída. Preencha `name` e, quando souber, `address`, `checkInAt`/`checkOutAt` (HH:MM), `code` (reserva, localizador), `details` (quarto, café incluso) e `info` (Wi-Fi, telefone, como pegar a chave). O app mostra sozinho "Saindo de" e "Dormindo em" em cada dia; se a pessoa troca de hotel, crie outra hospedagem no dia da troca.
+- **photo**: ponto de foto, um lugar bom para fotografar. `photo.title` diz o que fotografar; `where`, de onde; `bestTime`, a melhor luz ou hora; `text`, a dica de enquadramento. Crie perto do local a que se refere (`beforeId`/`afterId`). No app, o card tem um botão que abre a câmera do celular; fotos não entram pelo conector.
 - **note**: o resto (ideias, observações).
 - Arquivos (fotos, PDFs, passagens) só entram pelo app; diga isso se a pessoa pedir.
 

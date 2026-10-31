@@ -40,6 +40,7 @@ Se a pessoa colou uma lista ou um roteiro, extraia os lugares e confirme só o q
 2. Use a skill `adicionar-transportes` para os trechos entre locais, a chegada e a volta.
 3. Se a pessoa contou onde vai ficar, crie a hospedagem (`add_note` com `type` = `lodging`) no dia do check-in, com o dia da saída em `checkOutDayId`. Uma por estadia.
 4. Coloque alertas (`alert`) para reservas obrigatórias, dias de fechamento e horários-limite.
+   Se a pessoa gosta de fotografar ou pediu dicas de foto, crie pontos de foto (`photo`) junto dos locais mais fotogênicos, com a melhor hora e a dica de enquadramento.
 5. Rode a skill `revisar-dia` em cada dia e corrija o que ela apontar.
 
 ## 5. Entregar
