@@ -5,7 +5,7 @@ description: Regras para ler e editar viagens no CoTrip pelas ferramentas do con
 
 # Como trabalhar com o CoTrip
 
-O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e uma lista de **Não planejados** (locais ainda sem dia). Cada dia tem uma sequência única de itens, misturando **locais** e **itens do dia** (nota, alerta, transporte, link e arquivo). A ordem dessa sequência é o roteiro que a pessoa vê no celular.
+O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e uma lista de **Não planejados** (locais ainda sem dia). Cada dia tem uma sequência única de itens, misturando **locais** e **itens do dia** (nota, alerta, checklist, transporte, link e arquivo). A ordem dessa sequência é o roteiro que a pessoa vê no celular.
 
 ## Antes de mexer
 
@@ -25,7 +25,8 @@ O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e u
 | `get_visit`, `prepare_visit` | Preparar a visita a um local | Veja a skill `preparar-visita`. Não gasta crédito de IA do CoTrip |
 | `move_places` | Levar locais para um dia | Entram no **fim** do dia, na ordem enviada. `dayId: null` devolve para Não planejados |
 | `reorder_day` | Ordem final do dia | Envie **todos** os itens do dia (locais e notas), cada um como `{kind, id}`, sem faltar nem repetir |
-| `add_note` | Item do dia | Entra no fim do dia; depois use `reorder_day` para encaixar |
+| `add_note` | Item do dia | Entra no fim do dia, ou junto de outro item com `beforeId`/`afterId` |
+| `add_reminder`, `update_checklist` | Lembretes e tarefas | Veja a skill `lembretes`. Reaproveite a checklist que já existe para o mesmo momento |
 | `update_note` | Editar item | Troque o tipo em vez de apagar e recriar, para manter a posição |
 | `delete_place`, `delete_note` | Remover | Não dá para desfazer: confirme com a pessoa antes |
 
@@ -49,7 +50,8 @@ Escolha pelo que o item é; não crie tudo como nota.
 - **transport**: qualquer deslocamento. Uma rota com paradas vira um transporte por trecho, na ordem. Preencha `mode` (`plane`, `train`, `metro`, `bus`, `car`, `walk`, `boat`, `other`), `from`, `to`, e quando souber `departAt`/`arriveAt` (HH:MM), `details` (linha, plataforma, onde comprar o bilhete) e `code` (voo, reserva, localizador). Se o meio não der para inferir, pergunte antes de criar.
 - **link**: vídeos (YouTube, TikTok, Instagram) e páginas úteis, com um `title` que diga do que se trata. YouTube aparece como vídeo no roteiro.
 - **alert**: aviso com consequência se ignorado ("Fecha às 17h", "Precisa reservar", "Só aceita dinheiro").
-- **note**: o resto (lembretes, ideias, observações).
+- **checklist**: tarefas que a pessoa precisa fazer (comprar, reservar, levar, confirmar). `text` é o título; as tarefas vão em `checklist.items`. Pedidos do tipo "me lembra de…" usam `add_reminder` (skill `lembretes`).
+- **note**: o resto (ideias, observações).
 - Arquivos (fotos, PDFs, passagens) só entram pelo app; diga isso se a pessoa pedir.
 
 ## Limites
