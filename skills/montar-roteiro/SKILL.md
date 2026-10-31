@@ -43,4 +43,4 @@ Se a pessoa colou uma lista ou um roteiro, extraia os lugares e confirme só o q
 
 ## 5. Entregar
 
-Responda com um resumo por dia (título + 1 linha com os principais locais), o que ficou em Não planejados e por quê, e o que ainda precisa de decisão da pessoa (reservas, horários a confirmar). Lembre que ela pode abrir o CoTrip no celular e arrastar itens para ajustar.
+Responda com um resumo por dia (título + 1 linha com os principais locais), o que ficou em Não planejados e por quê, e o que ainda precisa de decisão da pessoa (reservas, horários a confirmar). Feche com o link da viagem (o `url` que `create_trip` devolve), para ela abrir no CoTrip e arrastar itens para ajustar.

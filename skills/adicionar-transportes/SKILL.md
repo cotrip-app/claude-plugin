@@ -37,4 +37,4 @@ Pule trechos que já têm transporte. Não crie trecho entre locais vizinhos ób
 
 ## 4. Fechar
 
-Diga quantos trechos foram criados por dia e quais precisam de confirmação (meio, horário ou linha).
+Diga quantos trechos foram criados por dia e quais precisam de confirmação (meio, horário ou linha). Termine com o link da viagem no CoTrip (o campo `url` que vem em `get_trip`, `list_trips`, `create_trip` e `update_trip`; o do dia, quando só um dia mudou), para a pessoa abrir direto no app.

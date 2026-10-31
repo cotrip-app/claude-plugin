@@ -39,4 +39,4 @@ Diga também o que está bom, em uma linha, quando o dia estiver redondo.
 
 ## 4. Aplicar o que a pessoa aprovar
 
-Use `update_place`, `move_places`, `add_note`/`update_note` e, por último, `get_trip` + `reorder_day`. Remoções (`delete_place`, `delete_note`) só com confirmação explícita; prefira mandar locais para Não planejados. Termine com o resumo do que mudou.
+Use `update_place`, `move_places`, `add_note`/`update_note` e, por último, `get_trip` + `reorder_day`. Remoções (`delete_place`, `delete_note`) só com confirmação explícita; prefira mandar locais para Não planejados. Termine com o resumo do que mudou e o link da viagem (ou do dia) que vem no `url` de `get_trip`.
