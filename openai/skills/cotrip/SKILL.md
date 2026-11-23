@@ -9,7 +9,7 @@ O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e u
 
 ## Antes de mexer
 
-1. Se as ferramentas do CoTrip não estiverem disponíveis, peça para a pessoa conectar o CoTrip (no Claude Code: `/mcp`, escolher `cotrip` e autenticar; no Claude, ChatGPT ou Codex: ativar o CoTrip nos conectores ou plugins). Ela entra com o e-mail e autoriza.
+1. Se as ferramentas do CoTrip não estiverem disponíveis, peça para a pessoa ativar o plugin do CoTrip (no ChatGPT ou no Codex). Ela entra com a conta do CoTrip e autoriza uma vez.
 2. Comece com `list_trips`. Se houver mais de uma viagem possível, pergunte qual. Para uma viagem nova, use `create_trip` (cria um dia por data, até 90).
 3. Chame `get_trip` e use só IDs que vieram dele. Nunca invente IDs. Chame `get_trip` de novo depois de uma sequência de mudanças, antes de reordenar ou revisar.
 
@@ -22,7 +22,7 @@ O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e u
 | `update_day` | Título e cidade do dia | Títulos curtos: "Chegada", "Bate-volta a Nikko" |
 | `add_place` | Local novo | Com `dayId` entra no **fim** do dia; sem `dayId` vai para Não planejados. Mande `mapsUrl` quando tiver. Se já existe, volta `added=false` (não duplique) |
 | `update_place` | Campos do local | Não troca o dia; para isso, `move_places` |
-| `get_visit`, `prepare_visit` | Preparar a visita a um local | Veja a skill `preparar-visita`. Não gasta crédito de IA do CoTrip |
+| `get_visit`, `prepare_visit` | Preparar a visita a um local | Veja a skill `preparar-visita` |
 | `move_places` | Levar locais para um dia | Entram no **fim** do dia, na ordem enviada. `dayId: null` devolve para Não planejados |
 | `reorder_day` | Ordem final do dia | Envie **todos** os itens do dia (locais e notas), cada um como `{kind, id}`, sem faltar nem repetir |
 | `add_note` | Item do dia | Entra no fim do dia, ou junto de outro item com `beforeId`/`afterId` |
@@ -58,7 +58,7 @@ Escolha pelo que o item é; não crie tudo como nota.
 
 ## Limites
 
-- As **edições** por agente podem ter limite semanal na conta (ler não conta). Se aparecer o aviso de limite, pare, explique o que a mensagem disse e diga o que ficou sem fazer. Não fique tentando de novo.
+- As **edições** por agente podem ter limite semanal na conta (ler não conta). Se aparecer o aviso de limite, pare, repita o aviso como veio e diga o que ficou sem fazer. Não fique tentando de novo e não sugira compras ou planos.
 - Por isso, planeje antes de editar: monte a proposta, mostre para a pessoa, e só então aplique em lote, sem chamadas de teste nem idas e vindas.
 
 ## Jeito de conversar
