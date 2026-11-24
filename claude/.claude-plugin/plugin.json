@@ -9,6 +9,10 @@
   },
   "homepage": "https://cotrip.wlln.dev/agentes",
   "repository": "https://github.com/cotrip-app/claude-plugin",
+  "documentationUrl": "https://github.com/cotrip-app/claude-plugin/tree/main/claude#readme",
+  "supportUrl": "https://github.com/cotrip-app/claude-plugin/issues",
+  "privacyPolicyUrl": "https://cotrip.wlln.dev/privacidade",
+  "termsOfServiceUrl": "https://cotrip.wlln.dev/termos",
   "keywords": [
     "travel",
     "itinerary",
