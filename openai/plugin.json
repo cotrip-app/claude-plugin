@@ -1,13 +1,23 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cotrip",
-  "version": "0.7.0",
-  "description": "Connects your AI to CoTrip and brings skills to build a trip day by day, spread places across days, link them with transport, review each day and prepare visits.",
-  "author": { "name": "CoTrip", "url": "https://cotrip.wlln.dev" },
+  "version": "0.8.0",
+  "description": "Connects ChatGPT and Codex to CoTrip with skills to build a trip day by day, spread places across days, link them with transport, review each day and prepare visits.",
+  "author": {
+    "name": "CoTrip",
+    "url": "https://cotrip.wlln.dev"
+  },
   "homepage": "https://cotrip.wlln.dev/agentes",
   "repository": "https://github.com/cotrip-app/claude-plugin",
   "license": "MIT",
-  "keywords": ["travel", "itinerary", "trip planning", "viagem", "roteiro", "cotrip"],
+  "keywords": [
+    "travel",
+    "itinerary",
+    "trip planning",
+    "viagem",
+    "roteiro",
+    "cotrip"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
@@ -89,7 +99,7 @@
         "commerce": false
       },
       "publication": {
-        "release_notes": "First version for ChatGPT and Codex: CoTrip MCP server plus skills to build, organize and review trip itineraries.",
+        "release_notes": "Version for ChatGPT and Codex: CoTrip MCP server plus skills written for ChatGPT and Codex to build, organize and review trip itineraries.",
         "translations": {
           "pt-BR": {
             "subtitle": "Roteiros de viagem por dia",

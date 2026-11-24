@@ -10,8 +10,8 @@
   "plugins": [
     {
       "name": "cotrip",
-      "source": "./",
-      "description": "Conecta o Claude ao CoTrip e traz um planejador de roteiros com skills para montar a viagem, distribuir locais pelos dias, ligar os locais com transportes e revisar cada dia.",
+      "source": "./claude",
+      "description": "Conecta o Claude ao CoTrip e traz um planejador de roteiros com skills para montar a viagem, distribuir locais pelos dias, ligar os locais com transportes, revisar cada dia e preparar as visitas.",
       "category": "productivity",
       "homepage": "https://cotrip.wlln.dev/agentes"
     }
