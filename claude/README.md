@@ -40,3 +40,5 @@ Adicione o marketplace `cotrip-app/claude-plugin` na área de plugins, ou baixe 
 Os agentes autorizados aparecem em https://cotrip.wlln.dev/agentes, onde dá para desconectar.
 
 Licença MIT. Suporte: https://github.com/cotrip-app/claude-plugin/issues
+
+[Política de privacidade (Privacy policy)](https://cotrip.wlln.dev/privacidade) · [Termos de uso (Terms of service)](https://cotrip.wlln.dev/termos)
