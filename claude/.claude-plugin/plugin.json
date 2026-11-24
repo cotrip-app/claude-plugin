@@ -17,9 +17,5 @@
     "itinerary",
     "cotrip"
   ],
-  "privacyPolicyUrl": "https://cotrip.wlln.dev/privacidade",
-  "termsOfServiceUrl": "https://cotrip.wlln.dev/termos",
-  "documentationUrl": "https://github.com/cotrip-app/claude-plugin#readme",
-  "supportUrl": "https://github.com/cotrip-app/claude-plugin/issues",
   "license": "MIT"
 }
