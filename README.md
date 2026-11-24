@@ -1,39 +1,41 @@
-# Plugins do CoTrip
+# CoTrip plugins
 
-Duas versões do plugin do [CoTrip](https://cotrip.wlln.dev), uma para cada loja, cada uma seguindo as regras da sua:
+Two versions of the [CoTrip](https://cotrip.wlln.dev) plugin, one for each store, each following that store's rules:
 
-| | Claude | OpenAI (ChatGPT e Codex) |
+| | Claude | OpenAI (ChatGPT and Codex) |
 |---|---|---|
-| Pasta | [`claude/`](claude/) | [`openai/`](openai/) |
-| Manifesto | `claude/.claude-plugin/plugin.json` | `openai/plugin.json` (formato portátil, ficha do diretório em `extensions.com.openai`) |
-| Servidor MCP | `claude/.mcp.json` | `openai/mcp.json` (`streamable-http`, OAuth por registro dinâmico) |
-| Agente | `claude/agents/planejador-de-roteiros.md` | não existe lá |
-| Skills | `claude/skills/` | `openai/skills/` (sem falar de compras, planos ou créditos, que a OpenAI proíbe) |
-| Ícone | `claude/.claude-plugin/icon.png` (512 px; vale só no primeiro save da ficha) | o do app, baixado do site ao empacotar |
-| Pacote | `dist/cotrip.plugin` | `dist/cotrip-openai.zip` |
-| Publicação | marketplace deste repositório (`.claude-plugin/marketplace.json` aponta para `./claude`) e diretório do Claude | zip enviado no portal de plugins da OpenAI |
+| Folder | [`claude/`](claude/) | [`openai/`](openai/) |
+| Manifest | `claude/.claude-plugin/plugin.json` | `openai/plugin.json` (portable format, directory listing in `extensions.com.openai`) |
+| MCP server | `claude/.mcp.json` | `openai/mcp.json` (`streamable-http`, OAuth with dynamic client registration) |
+| Agent | `claude/agents/trip-planner.md` | not available there |
+| Skills | `claude/skills/` | `openai/skills/` (no mention of purchases, plans or credits, which OpenAI forbids) |
+| Icon | `claude/.claude-plugin/icon.png` (512 px; only counts on the listing's first save) | the app icon, downloaded from the site when packing |
+| Package | `dist/cotrip.plugin` | `dist/cotrip-openai.zip` |
+| Publishing | this repository's marketplace (`.claude-plugin/marketplace.json` points to `./claude`) and the Claude directory | zip uploaded to OpenAI's plugin portal |
 
-Instalar no Claude Code:
+Install in Claude Code:
 
 ```
 /plugin marketplace add cotrip-app/claude-plugin
 /plugin install cotrip@cotrip
 ```
 
-Detalhes e exemplos em [`claude/README.md`](claude/README.md).
+Details and examples in [`claude/README.md`](claude/README.md).
 
-## Regras do repositório
+Everything in the plugins is written in English. The skills tell the assistant to answer in the person's language and to save trip content in that language.
 
-- As versões são independentes: cada pasta tem o próprio número e as skills podem divergir. Ao mudar uma regra que vale para as duas, mude nas duas pastas.
-- Na pasta `claude/` só entram os arquivos que o plugin usa (manifesto, `.mcp.json`, agente, skills, README) e o ícone em `.claude-plugin/icon.png`, que o diretório reconhece. Scripts ou outros binários ali seguram a revisão (`LOCAL_CODE_NOT_CHECKED`, `UNREAD_ASSET_REFERENCED`).
-- Nenhuma outra imagem no repositório. O ícone da OpenAI vem do site na hora de empacotar.
-- Nas skills da OpenAI, nada de vender, citar planos, créditos ou links de compra.
+## Repository rules
 
-## Publicar uma versão
+- The versions are independent: each folder has its own version number and the skills may diverge. When you change a rule that applies to both, change it in both folders.
+- The `claude/` folder only holds the files the plugin uses (manifest, `.mcp.json`, agent, skills, README) and the icon at `.claude-plugin/icon.png`, which the directory recognizes. Scripts or other binaries there hold up the review (`LOCAL_CODE_NOT_CHECKED`, `UNREAD_ASSET_REFERENCED`).
+- No other images in the repository. The OpenAI icon comes from the site at pack time.
+- In the OpenAI skills, nothing about selling, plans, credits or purchase links.
 
-1. Suba `version` no manifesto da versão que mudou (`claude/.claude-plugin/plugin.json` ou `openai/plugin.json`).
-2. Confira com `claude plugin validate ./claude` e `node scripts/pack-plugin.mjs` (ou `... claude` / `... openai`; a da OpenAI precisa de internet para baixar o ícone).
-3. Junte na `main`. O workflow cria a release: `v<versão>` com o `cotrip.plugin` para o Claude, `openai-v<versão>` com o `cotrip-openai.zip` para a OpenAI (essa não vira a "mais recente", para o link de download do Claude continuar certo).
-4. Claude: no portal do diretório, "Submit latest version". OpenAI: suba o `cotrip-openai.zip` novo no portal. Mudanças só no servidor MCP não precisam de pacote novo.
+## Publishing a version
 
-Quando as ferramentas do servidor MCP mudarem no CoTrip, revise as skills das duas pastas (elas citam os nomes e as regras das ferramentas) e os casos de teste em `openai/plugin.json` (`extensions.com.openai.review`).
+1. Bump `version` in the manifest of the version that changed (`claude/.claude-plugin/plugin.json` or `openai/plugin.json`).
+2. Check with `claude plugin validate ./claude` and `node scripts/pack-plugin.mjs` (or `... claude` / `... openai`; the OpenAI one needs internet to download the icon).
+3. Merge into `main`. The workflow creates the release: `v<version>` with `cotrip.plugin` for Claude, `openai-v<version>` with `cotrip-openai.zip` for OpenAI (that one isn't marked "latest", so Claude's download link stays right).
+4. Claude: in the directory portal, "Submit latest version". OpenAI: upload the new `cotrip-openai.zip` in the portal. Changes only to the MCP server don't need a new package.
+
+When the MCP server tools change in CoTrip, review the skills in both folders (they cite the tools' names and rules) and the test cases in `openai/plugin.json` (`extensions.com.openai.review`).

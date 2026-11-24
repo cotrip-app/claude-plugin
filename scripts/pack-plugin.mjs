@@ -1,23 +1,23 @@
-// Empacota as duas versões do plugin em arquivos .zip com os arquivos na raiz, sem dependências (só o zlib do Node):
-// - dist/cotrip.plugin: versão do Claude, a pasta claude/ inteira (.claude-plugin/plugin.json, .mcp.json, agente e skills).
-// - dist/cotrip-openai.zip: versão da OpenAI, a pasta openai/ (plugin.json e mcp.json portáteis, skills) mais o ícone.
-//   O ícone não fica no repositório: o diretório do Claude segura para revisão a versão com imagem ou binário que ele não lê.
-//   Ele vem do site na hora de empacotar.
-// Cada versão tem o próprio número; uso: node scripts/pack-plugin.mjs [claude|openai] (sem argumento, as duas).
+// Packs both plugin versions into .zip files with the files at the root, no dependencies (Node zlib only):
+// - dist/cotrip.plugin: the Claude version, the whole claude/ folder (.claude-plugin/plugin.json, .mcp.json, agent and skills).
+// - dist/cotrip-openai.zip: the OpenAI version, the openai/ folder (portable plugin.json and mcp.json, skills) plus the icon.
+//   The icon is not stored in the repository: the Claude directory holds back a version with images or binaries it does not read.
+//   It is downloaded from the site at pack time.
+// Each version has its own number; usage: node scripts/pack-plugin.mjs [claude|openai] (no argument: both).
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { deflateRawSync } from "node:zlib";
 
 const root = new URL("../", import.meta.url).pathname;
-// Cada item é a pasta que vira a raiz do zip e os arquivos extras.
+// Each target is the folder that becomes the zip root, plus extra files.
 const TARGETS = {
   claude: { out: "cotrip.plugin", dir: "claude", extra: async () => [["LICENSE", readFileSync(join(root, "LICENSE"))]] },
   openai: {
     out: "cotrip-openai.zip", dir: "openai",
     extra: async () => {
-      // O ícone do app (512 px), o mesmo que o openai/plugin.json cita em logo e composerIcon.
+      // The app icon (512 px), the one openai/plugin.json uses for logo and composerIcon.
       const icon = Buffer.from(await (await fetch("https://cotrip.wlln.dev/icons/icon-512.png")).arrayBuffer());
-      if (!icon.subarray(1, 4).equals(Buffer.from("PNG"))) throw new Error("O site não devolveu o ícone em PNG");
+      if (!icon.subarray(1, 4).equals(Buffer.from("PNG"))) throw new Error("The site did not return the icon as PNG");
       return [["assets/icon.png", icon], ["LICENSE", readFileSync(join(root, "LICENSE"))]];
     },
   },
@@ -31,7 +31,7 @@ const files = (dir) => readdirSync(dir).sort().flatMap((name) => {
 const table = Array.from({ length: 256 }, (_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; return c >>> 0; });
 const crc32 = (buf) => { let c = 0xffffffff; for (const b of buf) c = table[(c ^ b) & 0xff] ^ (c >>> 8); return (c ^ 0xffffffff) >>> 0; };
 
-// Data fixa (1/1/2026) para o arquivo sair igual a cada build.
+// Fixed date (2026-01-01) so every build produces the same file.
 const DOS_TIME = 0, DOS_DATE = ((2026 - 1980) << 9) | (1 << 5) | 1;
 function pack(out, dir, extra = []) {
 const locals = [], centrals = [];
@@ -57,9 +57,9 @@ end.writeUInt32LE(0x06054b50, 0); end.writeUInt16LE(centrals.length / 2, 8); end
 end.writeUInt32LE(directory.length, 12); end.writeUInt32LE(offset, 16);
 mkdirSync(join(root, "dist"), { recursive: true });
 writeFileSync(join(root, "dist", out), Buffer.concat([...locals, directory, end]));
-console.log(`plugin empacotado: dist/${out} (${centrals.length / 2} arquivos)`);
+console.log(`plugin packed: dist/${out} (${centrals.length / 2} files)`);
 }
 
 const pick = process.argv[2];
-if (pick && !TARGETS[pick]) throw new Error(`Versão desconhecida: ${pick} (use claude ou openai)`);
+if (pick && !TARGETS[pick]) throw new Error(`Unknown version: ${pick} (use claude or openai)`);
 for (const [name, { out, dir, extra }] of Object.entries(TARGETS)) if (!pick || pick === name) pack(out, dir, await extra());

@@ -1,21 +1,23 @@
-# Plugin do CoTrip para Claude
+# CoTrip plugin for Claude
 
-Conecta o Claude ao [CoTrip](https://cotrip.wlln.dev) e ensina a montar roteiros do jeito que o app funciona.
+Connects Claude to [CoTrip](https://cotrip.wlln.dev) and teaches it to build itineraries the way the app works.
 
-## O que vem nele
+## What's included
 
-- **Conector CoTrip**: o servidor MCP `https://cotrip.wlln.dev/api/mcp`. Na primeira vez, o Claude abre o CoTrip para você entrar com o e-mail e autorizar. Não tem chave nem configuração.
-- **Agente `planejador-de-roteiros`**: monta ou reorganiza a viagem inteira, passando pelas skills abaixo.
+- **CoTrip connector**: the MCP server `https://cotrip.wlln.dev/api/mcp`. The first time, Claude opens CoTrip so you can sign in with your email and approve access. No keys or setup.
+- **`trip-planner` agent**: builds or reorganizes the whole trip, going through the skills below.
 - **Skills**:
-  - `cotrip`: regras para ler e editar viagens (IDs, ordem do dia, tipos de item, limites).
-  - `montar-roteiro`: cria a viagem do zero a partir de uma conversa, lista de lugares ou roteiro colado.
-  - `distribuir-locais`: leva os locais aos dias por região, horário, prioridade e ritmo.
-  - `adicionar-transportes`: lança um transporte por trecho e encaixa entre os locais.
-  - `revisar-dia`: aponta dia corrido, horário errado, ida e volta no mapa, alertas faltando.
-  - `lembretes`: "me lembra de…" vira tarefa numa checklist do roteiro, no dia e no ponto certos; marca o que já foi feito e lista o que falta.
-  - `preparar-visita`: pesquisa cada local (melhor horário, destaques, cuidados) e grava a visita no CoTrip, no formato padrão ou no que você pedir.
+  - `cotrip`: rules for reading and editing trips (IDs, day order, item types, limits).
+  - `build-itinerary`: creates the trip from scratch from a conversation, a list of places or a pasted itinerary.
+  - `distribute-places`: takes the places to the days by area, opening hours, priority and pace.
+  - `add-transport`: adds one transport per leg and fits it between the places.
+  - `review-day`: points out packed days, wrong hours, back and forth on the map, missing alerts.
+  - `reminders`: "remind me to…" becomes a task in a checklist in the itinerary, on the right day and at the right point; checks off what's done and lists what's left.
+  - `prepare-visit`: researches each place (best time, highlights, cautions) and saves the visit in CoTrip, in the standard format or the one you ask for.
 
-## Instalar
+Claude always answers in your language, and what it saves in CoTrip follows that language too.
+
+## Install
 
 **Claude Code**
 
@@ -24,21 +26,21 @@ Conecta o Claude ao [CoTrip](https://cotrip.wlln.dev) e ensina a montar roteiros
 /plugin install cotrip@cotrip
 ```
 
-Depois rode `/mcp`, escolha `cotrip` e autentique.
+Then run `/mcp`, pick `cotrip` and authenticate.
 
-**Claude (app e claude.ai)**
+**Claude (app and claude.ai)**
 
-Adicione o marketplace `cotrip-app/claude-plugin` na área de plugins, ou baixe o `cotrip.plugin` da [versão mais recente](https://github.com/cotrip-app/claude-plugin/releases/latest/download/cotrip.plugin). Se preferir só o conector, abra o [CoTrip no diretório do Claude](https://claude.ai/directory/cotrip) e toque em Conectar.
+Add the `cotrip-app/claude-plugin` marketplace in the plugins area, or download `cotrip.plugin` from the [latest release](https://github.com/cotrip-app/claude-plugin/releases/latest/download/cotrip.plugin). If you only want the connector, open [CoTrip in the Claude directory](https://claude.ai/directory/cotrip) and tap Connect.
 
-## Exemplos
+## Examples
 
-- "Vou pra Lisboa de 10 a 16 de maio, monta o roteiro no CoTrip."
-- "Distribui os Não planejados da viagem de Tóquio pelos dias."
-- "Adiciona os transportes do dia 3."
-- "Revisa o roteiro de Roma, tá muito corrido?"
+- "I'm going to Lisbon from May 10 to 16, build the itinerary in CoTrip."
+- "Spread the Unplanned places of my Tokyo trip across the days."
+- "Add the transport for day 3."
+- "Review my Rome itinerary, is it too packed?"
 
-Os agentes autorizados aparecem em https://cotrip.wlln.dev/agentes, onde dá para desconectar.
+Authorized agents show up at https://cotrip.wlln.dev/agentes, where you can disconnect them.
 
-Licença MIT. Suporte: https://github.com/cotrip-app/claude-plugin/issues
+MIT license. Support: https://github.com/cotrip-app/claude-plugin/issues
 
-[Política de privacidade (Privacy policy)](https://cotrip.wlln.dev/privacidade) · [Termos de uso (Terms of service)](https://cotrip.wlln.dev/termos)
+[Privacy policy](https://cotrip.wlln.dev/privacidade) · [Terms of service](https://cotrip.wlln.dev/termos)

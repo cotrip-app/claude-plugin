@@ -1,8 +1,8 @@
 {
   "name": "cotrip",
   "displayName": "CoTrip",
-  "version": "0.8.0",
-  "description": "Conecta o Claude ao CoTrip e traz um planejador de roteiros com skills para montar a viagem, distribuir locais pelos dias, ligar os locais com transportes, revisar cada dia e preparar as visitas.",
+  "version": "0.9.0",
+  "description": "Connects Claude to CoTrip with a trip planner agent and skills to build the trip, spread places across days, link them with transport, review each day and prepare visits.",
   "author": {
     "name": "CoTrip",
     "url": "https://cotrip.wlln.dev"
@@ -10,11 +10,9 @@
   "homepage": "https://cotrip.wlln.dev/agentes",
   "repository": "https://github.com/cotrip-app/claude-plugin",
   "keywords": [
-    "viagem",
-    "roteiro",
-    "itinerário",
     "travel",
     "itinerary",
+    "trip planning",
     "cotrip"
   ],
   "license": "MIT"
