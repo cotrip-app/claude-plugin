@@ -9,7 +9,7 @@ Duas versões do plugin do [CoTrip](https://cotrip.wlln.dev), uma para cada loja
 | Servidor MCP | `claude/.mcp.json` | `openai/mcp.json` (`streamable-http`, OAuth por registro dinâmico) |
 | Agente | `claude/agents/planejador-de-roteiros.md` | não existe lá |
 | Skills | `claude/skills/` | `openai/skills/` (sem falar de compras, planos ou créditos, que a OpenAI proíbe) |
-| Ícone | fixado na ficha do diretório | o do app, baixado do site ao empacotar |
+| Ícone | `claude/.claude-plugin/icon.png` (512 px; vale só no primeiro save da ficha) | o do app, baixado do site ao empacotar |
 | Pacote | `dist/cotrip.plugin` | `dist/cotrip-openai.zip` |
 | Publicação | marketplace deste repositório (`.claude-plugin/marketplace.json` aponta para `./claude`) e diretório do Claude | zip enviado no portal de plugins da OpenAI |
 
@@ -25,8 +25,8 @@ Detalhes e exemplos em [`claude/README.md`](claude/README.md).
 ## Regras do repositório
 
 - As versões são independentes: cada pasta tem o próprio número e as skills podem divergir. Ao mudar uma regra que vale para as duas, mude nas duas pastas.
-- Na pasta `claude/` só entram arquivos de texto que o plugin usa (manifesto, `.mcp.json`, agente, skills, README). O diretório do Claude precisa ler o plugin inteiro: binários, imagens ou scripts ali seguram a revisão (`LOCAL_CODE_NOT_CHECKED`, `UNREAD_ASSET_REFERENCED`).
-- Nada de imagem no repositório. O ícone da OpenAI vem do site na hora de empacotar.
+- Na pasta `claude/` só entram os arquivos que o plugin usa (manifesto, `.mcp.json`, agente, skills, README) e o ícone em `.claude-plugin/icon.png`, que o diretório reconhece. Scripts ou outros binários ali seguram a revisão (`LOCAL_CODE_NOT_CHECKED`, `UNREAD_ASSET_REFERENCED`).
+- Nenhuma outra imagem no repositório. O ícone da OpenAI vem do site na hora de empacotar.
 - Nas skills da OpenAI, nada de vender, citar planos, créditos ou links de compra.
 
 ## Publicar uma versão
