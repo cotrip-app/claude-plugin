@@ -1,6 +1,6 @@
-# Uma release por versão de cada plugin, quando o número muda na main (ou à mão em Actions):
-# - Claude: v<versão> com o cotrip.plugin (é a "mais recente", usada no link de download do README).
-# - OpenAI: openai-v<versão> com o cotrip-openai.zip para subir no portal (não vira a "mais recente").
+# One release per version of each plugin, when the number changes on main (or by hand in Actions):
+# - Claude: v<version> with cotrip.plugin (marked "latest", used by the README download link).
+# - OpenAI: openai-v<version> with cotrip-openai.zip to upload to the portal (not marked "latest").
 name: Release
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Versão
+      - name: Version
         id: version
         run: echo "tag=${{ matrix.prefix }}$(node -p "require('./${{ matrix.manifest }}').version")" >> "$GITHUB_OUTPUT"
       - run: node scripts/pack-plugin.mjs ${{ matrix.name }}
@@ -40,7 +40,7 @@ jobs:
           TAG: ${{ steps.version.outputs.tag }}
         run: |
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "$TAG já existe; suba a versão no manifesto para publicar outra."
+            echo "$TAG already exists; bump the version in the manifest to publish another."
           else
             gh release create "$TAG" "${{ matrix.file }}" --target "$GITHUB_SHA" --title "$TAG" --generate-notes --latest=${{ matrix.latest }}
           fi

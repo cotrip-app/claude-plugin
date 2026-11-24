@@ -1,70 +1,70 @@
 ---
 name: cotrip
-description: Regras para ler e editar viagens no CoTrip pelas ferramentas do conector (list_trips, get_trip, add_place, move_places, reorder_day, add_note, prepare_visit...). Use sempre que a pessoa falar de uma viagem, roteiro, dia ou local do CoTrip, pedir para "colocar no CoTrip", ou quando outra skill do CoTrip for usada.
+description: Rules for reading and editing trips in CoTrip through the connector tools (list_trips, get_trip, add_place, move_places, reorder_day, add_note, prepare_visit...). Use whenever the person talks about a CoTrip trip, itinerary, day or place, asks to "put it in CoTrip", or when another CoTrip skill is used.
 ---
 
-# Como trabalhar com o CoTrip
+# How to work with CoTrip
 
-O CoTrip organiza uma viagem em **dias** (um por data, com cidade e título) e uma lista de **Não planejados** (locais ainda sem dia). Cada dia tem uma sequência única de itens, misturando **locais** e **itens do dia** (nota, alerta, checklist, transporte ou passagem, hospedagem, ponto de foto, link e arquivo). A ordem dessa sequência é o roteiro que a pessoa vê no celular.
+CoTrip organizes a trip into **days** (one per date, each with a city and a title) and an **Unplanned** list (places with no day yet; the app may show it as "Não planejados"). Each day has a single sequence of items mixing **places** and **day items** (note, alert, checklist, transport or ticket, lodging, photo spot, link and file). The order of that sequence is the itinerary the person sees on their phone.
 
-## Antes de mexer
+## Before changing anything
 
-1. Se as ferramentas do CoTrip não estiverem disponíveis, peça para a pessoa ativar o plugin do CoTrip (no ChatGPT ou no Codex). Ela entra com a conta do CoTrip e autoriza uma vez.
-2. Comece com `list_trips`. Se houver mais de uma viagem possível, pergunte qual. Para uma viagem nova, use `create_trip` (cria um dia por data, até 90).
-3. Chame `get_trip` e use só IDs que vieram dele. Nunca invente IDs. Chame `get_trip` de novo depois de uma sequência de mudanças, antes de reordenar ou revisar.
+1. If the CoTrip tools are not available, ask the person to turn on the CoTrip plugin (in ChatGPT or Codex). They sign in with their CoTrip account and approve access once.
+2. Start with `list_trips`. If more than one trip could match, ask which one. For a new trip, use `create_trip` (it creates one day per date, up to 90).
+3. Call `get_trip` and only use IDs that came from it. Never make up IDs. Call `get_trip` again after a series of changes, before reordering or reviewing.
 
-## Ferramentas e pegadinhas
+## Tools and gotchas
 
-| Ferramenta | Uso | Atenção |
+| Tool | Use | Watch out |
 |---|---|---|
-| `list_trips`, `get_trip` | Ler | Leitura é sempre liberada. Viagens e dias trazem `url`, o endereço deles no app |
-| `create_trip`, `update_trip` | Viagem | Devolvem a `url` da viagem. Mande `startDate` e `endDate` juntos. A viagem fica com um dia por data; dias vazios fora do intervalo saem, e os que têm itens voltam em `keptOutside` (mova os itens e chame de novo) |
-| `update_day` | Título e cidade do dia | Títulos curtos: "Chegada", "Bate-volta a Nikko" |
-| `add_place` | Local novo | Com `dayId` entra no **fim** do dia; sem `dayId` vai para Não planejados. Mande `mapsUrl` quando tiver. Se já existe, volta `added=false` (não duplique) |
-| `update_place` | Campos do local | Não troca o dia; para isso, `move_places` |
-| `get_visit`, `prepare_visit` | Preparar a visita a um local | Veja a skill `preparar-visita` |
-| `move_places` | Levar locais para um dia | Entram no **fim** do dia, na ordem enviada. `dayId: null` devolve para Não planejados |
-| `reorder_day` | Ordem final do dia | Envie **todos** os itens do dia (locais e notas), cada um como `{kind, id}`, sem faltar nem repetir |
-| `add_note` | Item do dia | Entra no fim do dia, ou junto de outro item com `beforeId`/`afterId` |
-| `add_reminder`, `update_checklist` | Lembretes e tarefas | Veja a skill `lembretes`. Reaproveite a checklist que já existe para o mesmo momento |
-| `update_note` | Editar item | Troque o tipo em vez de apagar e recriar, para manter a posição |
-| `delete_place`, `delete_note` | Remover | Não dá para desfazer: confirme com a pessoa antes |
+| `list_trips`, `get_trip` | Read | Reading is always allowed. Trips and days include `url`, their address in the app |
+| `create_trip`, `update_trip` | Trip | Return the trip `url`. Send `startDate` and `endDate` together. The trip keeps one day per date; empty days outside the range are removed, and days with items come back in `keptOutside` (move the items and call again) |
+| `update_day` | Day title and city | Short titles: "Arrival", "Day trip to Nikko" |
+| `add_place` | New place | With `dayId` it goes to the **end** of the day; without `dayId` it goes to Unplanned. Send `mapsUrl` when you have it. If it already exists you get `added=false` (don't duplicate) |
+| `update_place` | Place fields | Doesn't change the day; use `move_places` for that |
+| `get_visit`, `prepare_visit` | Prepare the visit to a place | See the `prepare-visit` skill |
+| `move_places` | Move places to a day | They go to the **end** of the day, in the order sent. `dayId: null` sends them back to Unplanned |
+| `reorder_day` | Final order of the day | Send **every** item of the day (places and notes), each as `{kind, id}`, none missing or repeated |
+| `add_note` | Day item | Goes to the end of the day, or next to another item with `beforeId`/`afterId` |
+| `add_reminder`, `update_checklist` | Reminders and tasks | See the `reminders` skill. Reuse the checklist that already exists for the same moment |
+| `update_note` | Edit an item | Change the type instead of deleting and recreating, to keep the position |
+| `delete_place`, `delete_note` | Remove | Can't be undone: confirm with the person first |
 
-Fluxo para montar um dia: `move_places` (ou `add_place` com `dayId`) → `add_note` para transportes e alertas → `get_trip` → `reorder_day` com a ordem final.
+Flow to build a day: `move_places` (or `add_place` with `dayId`) → `add_note` for transport and alerts → `get_trip` → `reorder_day` with the final order.
 
-## Campos do local
+## Place fields
 
-- `status`: `wishlist` (quero ir), `planned` (planejado), `visited`, `missed`. Locais movidos para um dia viram planejados.
-- `priority`: `high`, `medium`, `optional`. Use `optional` para o que pode cair se o dia apertar.
-- `durationMinutes`: tempo previsto no local (5 a 1440).
-- `timeSlot`: horário planejado em texto curto ("09:30", "Manhã", "Pôr do sol").
-- `openingHours`: horário de funcionamento em texto ("Ter–Dom 9h–17h, fecha seg").
-- `area`: bairro ou região. É o campo que agrupa locais próximos, então preencha sempre.
-- `category`: "Museu", "Restaurante", "Parque", "Mirante", "Templo"...
-- `note`: observação do local, aparece na tela do local no app ("Reservar o minitrekking", "Pedir o cordeiro"). Pesquisa sobre o local vai em `prepare_visit`, não aqui.
+- `status`: `wishlist` (want to go), `planned`, `visited`, `missed`. Places moved to a day become planned.
+- `priority`: `high`, `medium`, `optional`. Use `optional` for what can be dropped if the day gets tight.
+- `durationMinutes`: expected time at the place (5 to 1440).
+- `timeSlot`: planned time as short text ("09:30", "Morning", "Sunset").
+- `openingHours`: opening hours as text ("Tue–Sun 9am–5pm, closed Mon").
+- `area`: neighborhood or region. It's the field that groups nearby places, so always fill it in.
+- `category`: "Museum", "Restaurant", "Park", "Viewpoint", "Temple"...
+- `note`: a note about the place, shown on the place screen in the app ("Book the mini-trekking", "Order the lamb"). Research about the place goes in `prepare_visit`, not here.
 
-## Tipos de item do dia
+## Day item types
 
-Escolha pelo que o item é; não crie tudo como nota.
+Pick by what the item is; don't create everything as a note.
 
-- **transport**: qualquer deslocamento. Uma rota com paradas vira um transporte por trecho, na ordem. Preencha `mode` (`plane`, `train`, `metro`, `bus`, `car`, `walk`, `boat`, `other`), `from`, `to`, e quando souber `departAt`/`arriveAt` (HH:MM), `details` (linha, plataforma, onde comprar o bilhete) e `code` (reserva, localizador). Em voo, trem, ônibus ou barco com bilhete, preencha também `carrier` (companhia), `number` (voo, trem ou linha), `seat` (assento) e `gate` (terminal e portão, plataforma ou cais) quando a pessoa informar: o app mostra o item como uma passagem, com a reserva para copiar. Chegada depois da meia-noite vai só com o horário (o app mostra +1). Se o meio não der para inferir, pergunte antes de criar.
-- **link**: vídeos (YouTube, TikTok, Instagram) e páginas úteis, com um `title` que diga do que se trata. YouTube aparece como vídeo no roteiro.
-- **alert**: aviso com consequência se ignorado ("Fecha às 17h", "Precisa reservar", "Só aceita dinheiro").
-- **checklist**: tarefas que a pessoa precisa fazer (comprar, reservar, levar, confirmar). `text` é o título; as tarefas vão em `checklist.items`. Pedidos do tipo "me lembra de…" usam `add_reminder` (skill `lembretes`).
-- **lodging**: hospedagem (hotel, Airbnb, casa de amigos). Um item por estadia, no dia do check-in, com `lodging.checkOutDayId` = dia da saída. Preencha `name` e, quando souber, `address`, `checkInAt`/`checkOutAt` (HH:MM), `code` (reserva, localizador), `details` (quarto, café incluso) e `info` (Wi-Fi, telefone, como pegar a chave). O app mostra sozinho "Saindo de" e "Dormindo em" em cada dia; se a pessoa troca de hotel, crie outra hospedagem no dia da troca.
-- **photo**: ponto de foto, um lugar bom para fotografar. `photo.title` diz o que fotografar; `where`, de onde; `bestTime`, a melhor luz ou hora; `text`, a dica de enquadramento. Crie perto do local a que se refere (`beforeId`/`afterId`).
-- **note**: o resto (ideias, observações).
-- Arquivos (fotos, PDFs, passagens) só entram pelo app; diga isso se a pessoa pedir.
+- **transport**: any leg of travel. A route with stops becomes one transport per leg, in order. Fill in `mode` (`plane`, `train`, `metro`, `bus`, `car`, `walk`, `boat`, `other`), `from`, `to`, and when known `departAt`/`arriveAt` (HH:MM), `details` (line, platform, where to buy the ticket) and `code` (booking, confirmation code). For a flight, train, bus or boat with a ticket, also fill in `carrier` (airline or operator), `number` (flight, train or line), `seat` and `gate` (terminal and gate, platform or pier) when the person gives them: the app shows the item as a ticket, with the booking code to copy. An arrival after midnight goes with the time only (the app shows +1). If the mode can't be inferred, ask before creating it.
+- **link**: videos (YouTube, TikTok, Instagram) and useful pages, with a `title` that says what it is. YouTube shows up as a video in the itinerary.
+- **alert**: a warning with a consequence if ignored ("Closes at 5pm", "Needs a reservation", "Cash only").
+- **checklist**: tasks the person needs to do (buy, book, bring, confirm). `text` is the title; the tasks go in `checklist.items`. "Remind me to…" requests use `add_reminder` (`reminders` skill).
+- **lodging**: where they stay (hotel, Airbnb, a friend's place). One item per stay, on the check-in day, with `lodging.checkOutDayId` = the day they leave. Fill in `name` and, when known, `address`, `checkInAt`/`checkOutAt` (HH:MM), `code` (booking, confirmation code), `details` (room, breakfast included) and `info` (Wi-Fi, phone, how to get the key). The app shows "Leaving from" and "Sleeping at" on each day by itself; if the person changes hotels, create another lodging on the day of the change.
+- **photo**: photo spot, a good place to take pictures. `photo.title` says what to shoot; `where`, from where; `bestTime`, the best light or hour; `text`, the framing tip. Create it next to the place it refers to (`beforeId`/`afterId`).
+- **note**: everything else (ideas, remarks).
+- Files (photos, PDFs, tickets) can only be added in the app; say so if the person asks.
 
-## Limites
+## Limits
 
-- As **edições** por agente podem ter limite semanal na conta (ler não conta). Se aparecer o aviso de limite, pare, repita o aviso como veio e diga o que ficou sem fazer. Não fique tentando de novo e não sugira compras ou planos.
-- Por isso, planeje antes de editar: monte a proposta, mostre para a pessoa, e só então aplique em lote, sem chamadas de teste nem idas e vindas.
+- Agent **edits** may have a weekly limit on the account (reading doesn't count). If the limit message shows up, stop, repeat the message as it came and say what was left undone. Don't keep retrying and don't suggest purchases or plans.
+- So plan before editing: build the proposal, show it to the person, and only then apply it in one go, with no test calls or back and forth.
 
-## Jeito de conversar
+## How to talk
 
-- Fale no idioma da pessoa. Datas no formato dela (ex.: "sex, 14/03").
-- Antes de uma mudança grande (mais de um dia, remoções, troca de datas), mostre o plano em texto curto e peça um ok.
-- Depois de aplicar, resuma o que mudou por dia e lembre que ela pode ajustar arrastando no app.
-- Sempre que criar ou mudar algo, termine a resposta com o link da viagem (`url`), como link clicável: "[Abrir no CoTrip](url)". Se só um dia mudou, use o `url` do dia. Use só links que vieram das ferramentas; não monte o endereço na mão.
-- Não invente horários de funcionamento, preços ou regras. Se pesquisar na web, diga que conferiu e quando; se não deu para conferir, marque como "a confirmar".
+- Always reply in the person's language, and write what you save in CoTrip (titles, notes, tasks) in that language too. Dates in their format (e.g. "Fri, 03/14" or "sex, 14/03").
+- Before a big change (more than one day, removals, date changes), show the plan in a short text and ask for an ok.
+- After applying, summarize what changed per day and remind them they can adjust by dragging in the app.
+- Whenever you create or change something, end the reply with the trip link (`url`) as a clickable link: "[Open in CoTrip](url)". If only one day changed, use the day's `url`. Only use links that came from the tools; don't build the address by hand.
+- Don't make up opening hours, prices or rules. If you searched the web, say you checked and when; if you couldn't check, mark it as "to be confirmed".
